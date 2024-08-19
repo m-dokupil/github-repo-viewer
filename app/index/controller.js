@@ -12,6 +12,7 @@ export default class IndexController extends Controller {
   @tracked languages = [];
   @tracked errorMessage = '';
   @tracked isLoading = false;
+  @tracked selectedSorting = '';
 
   @action
   async fetchRepos() {
@@ -62,7 +63,9 @@ export default class IndexController extends Controller {
       });
 
       if (!response.ok) {
-        throw new Error(`Failed to fetch branches for repo ${repo.name}: ${response.statusText}`);
+        throw new Error(
+          `Failed to fetch branches for repo ${repo.name}: ${response.statusText}`
+        );
       }
 
       const branches = await response.json();
@@ -73,12 +76,27 @@ export default class IndexController extends Controller {
   }
 
   get filteredRepos() {
-    return this.repos.filter((repo) => {
+    const reposFiltered = this.repos.filter((repo) => {
       return (
         (this.showPrivate || !repo.private) &&
         (!this.selectedLanguage || repo.language === this.selectedLanguage)
       );
     });
+
+    console.log({
+      selectedSorting: this.selectedSorting,
+    })
+
+    reposFiltered.sort((a, b) => {
+      if (this.selectedSorting === 'asc') {
+        return a.stargazers_count - b.stargazers_count;
+      } else if (this.selectedSorting === 'desc') {
+        return b.stargazers_count - a.stargazers_count;
+      }
+    })
+
+    return reposFiltered;
+
   }
 
   @action
@@ -106,5 +124,10 @@ export default class IndexController extends Controller {
     if (event.key === 'Enter') {
       this.fetchRepos();
     }
+  }
+
+  @action
+  selectStarSorting(event) {
+    this.selectedSorting = event.target.value;
   }
 }

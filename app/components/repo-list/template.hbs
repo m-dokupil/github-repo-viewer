@@ -17,6 +17,14 @@
             <option value={{language}}>{{language}}</option>
           {{/each}}
         </select>
+        {{#if @repos}}
+          <select {{on "change" @selectStarSorting}}>
+            <option value="">Repos Stars</option>
+            {{#each this.starSorting as |sorting|}}
+              <option value={{sorting}}>{{sorting}}</option>
+            {{/each}}
+          </select>
+        {{/if}}
       </div>
     </div>
   </div>

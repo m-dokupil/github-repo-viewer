@@ -4,6 +4,7 @@
     GitHub</a>
   <p>Language: {{@repo.language}}</p>
   <p>Branches: {{@repo.branches.length}}</p>
+  <p>Stars: {{@repo.stargazers_count}}</p>
   <p>Visibility: {{if @repo.private 'Private' 'Public'}}</p>
   <button
     class='button is-small {{if this.isBranchesLoading 'is-loading'}}'
