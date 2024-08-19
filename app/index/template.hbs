@@ -1,0 +1,67 @@
+<div class='section has-background-black-ter'>
+  <div class='container'>
+    <h1 class='title has-text-centered'>GitHub Repository Viewer</h1>
+    <div class='box'>
+      <div class='field'>
+        <label class='label' for='token'>GitHub Access Token:</label>
+        <div class='control'>
+          <input
+            id='token'
+            class='input'
+            type='text'
+            value={{this.token}}
+            {{on 'input' this.updateToken}}
+            {{on "keyup" this.handleKeyup}}
+          />
+        </div>
+        {{#if this.errorMessage}}
+          <p class='help is-danger'>{{this.errorMessage}}</p>
+        {{/if}}
+      </div>
+      <div class='field'>
+        <label class='label' for='name'>Organization Name:</label>
+        <div class='control'>
+          <input
+            id='name'
+            class='input'
+            type='text'
+            value={{this.orgName}}
+            {{on 'input' this.updateOrgName}}
+            {{on "keyup" this.handleKeyup}}
+          />
+        </div>
+        {{#if this.errorMessage}}
+          <p class='help is-danger'>{{this.errorMessage}}</p>
+        {{/if}}
+      </div>
+      <div class='control'>
+        <button
+          class='button is-primary'
+          type='button'
+          {{on 'click' this.fetchRepos}}
+        >Fetch Repositories</button>
+      </div>
+    </div>
+    {{#if this.errorMessage}}
+      <div class='notification is-danger'>
+        <button
+          class='delete'
+          type='button'
+          {{on 'click' (fn (mut this.errorMessage) '')}}
+        ></button>
+        {{this.errorMessage}}
+      </div>
+    {{/if}}
+
+    <RepoList
+      @repos={{this.filteredRepos}}
+      @isLoading={{this.isLoading}}
+      @showPrivate={{this.showPrivate}}
+      @languages={{this.languages}}
+      @selectedLanguage={{this.selectedLanguage}}
+      @toggleShowPrivate={{this.toggleShowPrivate}}
+      @selectLanguage={{this.selectLanguage}}
+      @fetchBranches={{this.fetchBranches}}
+    />
+  </div>
+</div>
